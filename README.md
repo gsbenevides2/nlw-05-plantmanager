@@ -12,6 +12,7 @@
 <li>Expo</li>
 <li>Styled Components</li>
 <li>Typescript</li>
+</ul>
 
 <h2>🏃Como rodar</h2>
 <ol>
@@ -19,12 +20,12 @@
 <li>Instale as dependências usando o Yarn</li>
 <li>Rode o <pre>expo start</pre></li>
 </ol>
-<blockquote>Veja aqui como rodar no celular.</blockquote>
 
 <h2>🔗Links</h2>
 <ul>
 <li><a href="https://expo.io/--/to-exp/exp%3A%2F%2Fexp.host%2F%40gsbenevides2%2Fplantmanager">Abrir no Expo Go</a></li>
 <li><a href="">Ver publicação no Blog.</a></li>
+</ul>
 
 <h2>📃 Licença</h2>
 <p>Este projeto está sobre a licença MIT. Veja ela em: <a href="https://github.com/gsbenevides2/nlw-05-plantmanager/blob/main/LICENSE">LICENSE</a>.</p>
