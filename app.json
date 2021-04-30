@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "plantmanager",
+    "name": "Plant Manager",
     "slug": "plantmanager",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -20,6 +20,8 @@
       "supportsTablet": true
     },
     "android": {
+		 "package": "com.gsbenevides.plantmanager",
+		 "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
