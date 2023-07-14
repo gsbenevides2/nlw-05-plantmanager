@@ -13,7 +13,8 @@ interface PlantProps extends RectButtonProps {
   data: {
     name: string
     photo: string
-    hour: string
+    hour: number,
+    minute: number
   }
   handleRemove: () => void
 }
@@ -41,7 +42,7 @@ export function PlantCardSecondary({
         <Styled.Title>{data.name}</Styled.Title>
         <Styled.Details>
           <Styled.TimeLabel>Regar às</Styled.TimeLabel>
-          <Styled.Time>{data.hour}</Styled.Time>
+          <Styled.Time>{data.hour}:{data.minute}</Styled.Time>
         </Styled.Details>
       </Styled.Container>
     </Swipeable>

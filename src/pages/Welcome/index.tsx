@@ -1,45 +1,46 @@
-import React from 'react'
+import React from "react";
 
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { useNavigation } from '@react-navigation/native'
-import AppLoading from 'expo-app-loading'
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
+// import AppLoading from 'expo-app-loading'
 
-import wateringImg from '../../assets/watering.png'
-import { IconButton } from '../../components/IconButton'
-import * as Styled from './styles'
+import wateringImg from "../../assets/watering.png";
+import { IconButton } from "../../components/IconButton";
+import * as Styled from "./styles";
+import { StackScreenProps } from "@react-navigation/stack";
+import { StackScreensProps } from "../../routes/types";
 
-interface Props {
-  navigation: ReturnType<typeof useNavigation>
-}
+
+type Props = StackScreenProps<StackScreensProps, "Welcome">
 
 export function WelcomeScreen({ navigation }: Props): React.ReactElement {
-  const [loading, setLoading] = React.useState(true)
+  const [loading, setLoading] = React.useState(true);
   function goToUserIdentification() {
-    navigation.navigate('UserIdentification')
+    navigation.navigate("UserIdentification");
   }
   React.useEffect(() => {
     async function handleWelcomeScreen() {
-      const user = await AsyncStorage.getItem('@plantmanager:user')
+      const user = await AsyncStorage.getItem("@plantmanager:user");
       if (user) {
         navigation.reset({
           index: 0,
-          routes: [{ name: 'App' }]
-        })
+          routes: [{ name: "App" }],
+        });
       } else {
-        setLoading(false)
+        setLoading(false);
       }
     }
-    handleWelcomeScreen()
-  }, [])
+    handleWelcomeScreen();
+  }, []);
 
-  if (loading) return <AppLoading />
+  if (loading) return <Styled.SafeArea />;
   else
     return (
       <Styled.SafeArea>
         <Styled.Wrapper>
           <Styled.Header>
-            Gerencie {'\n'}
-            suas plantas de {'\n'}
+            Gerencie {"\n"}
+            suas plantas de {"\n"}
             forma fácil
           </Styled.Header>
           <Styled.Img source={wateringImg} resizeMode="contain" />
@@ -50,5 +51,5 @@ export function WelcomeScreen({ navigation }: Props): React.ReactElement {
           <IconButton onPress={goToUserIdentification} icon="chevron-right" />
         </Styled.Wrapper>
       </Styled.SafeArea>
-    )
+    );
 }

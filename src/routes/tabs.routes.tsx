@@ -1,26 +1,28 @@
-import React from 'react'
-import { Platform } from 'react-native'
+import React from "react";
+import { Platform } from "react-native";
 
-import { MaterialIcons } from '@expo/vector-icons'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import  {MaterialIcons}  from "@expo/vector-icons";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-import { MyPlantsScreen } from '../pages/MyPlants'
-import { PlantSelectScreen } from '../pages/PlantSelect'
-import { theme } from '../theme'
+import { MyPlantsScreen } from "../pages/MyPlants";
+import { PlantSelectScreen } from "../pages/PlantSelect";
+import { theme } from "../theme";
+import { TabsParams } from "./types";
 
-const Tab = createBottomTabNavigator()
+const Tab = createBottomTabNavigator<TabsParams>();
 
 const TabRoutes: React.FC = () => {
   return (
     <Tab.Navigator
-      tabBarOptions={{
-        activeTintColor: theme.colors.green,
-        inactiveTintColor: theme.colors.heading,
-        labelPosition: 'beside-icon',
-        style: {
-          paddingVertical: Platform.OS === 'ios' ? 20 : 0,
-          height: 60
-        }
+      screenOptions={{
+        tabBarActiveTintColor: theme.colors.green,
+        tabBarInactiveTintColor: theme.colors.heading,
+        tabBarLabelPosition: "beside-icon",
+        headerShown: false,
+        tabBarStyle: {
+          paddingVertical: Platform.OS === "ios" ? 20 : 0,
+          height: 60,
+        },
       }}
     >
       <Tab.Screen
@@ -30,11 +32,12 @@ const TabRoutes: React.FC = () => {
           // eslint-disable-next-line react/display-name
           tabBarIcon: ({ size, color }) => (
             <MaterialIcons
+
               name="add-circle-outline"
               size={size}
               color={color}
             />
-          )
+          ),
         }}
       />
 
@@ -49,11 +52,11 @@ const TabRoutes: React.FC = () => {
               size={size}
               color={color}
             />
-          )
+          ),
         }}
       />
     </Tab.Navigator>
-  )
-}
+  );
+};
 
-export default TabRoutes
+export default TabRoutes;

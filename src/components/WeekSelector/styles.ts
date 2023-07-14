@@ -12,7 +12,6 @@ interface Props {
 }
 
 export const ButtonContainer = styled(RectButton) <Props>`
- padding:12px;
  borderRadius:200px;
  height:46px;
  width:46px;

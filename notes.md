@@ -1,4 +1,0 @@
-- [x] Criar aviso que o usuario não tem plantas.
-- [x] Arrumar as rotas;
-- [x] Imagem de Peril estatica
-- [] Eslint - Prettie

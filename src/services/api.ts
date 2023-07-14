@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const api = axios.create({
-  baseURL: 'https://gsbenevides-server.herokuapp.com/'
+  baseURL: 'http://google.gui.dev.br:3001'
 })
 
 export default api

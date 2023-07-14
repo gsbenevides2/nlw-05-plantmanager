@@ -1,102 +1,96 @@
-import React from 'react'
-import { Alert, DeviceEventEmitter, FlatList } from 'react-native'
-import { showMessage } from 'react-native-flash-message'
+import React from "react";
+import { Alert, DeviceEventEmitter, FlatList } from "react-native";
+import { showMessage } from "react-native-flash-message";
 
-import { useNavigation } from '@react-navigation/native'
 
-import nature from '../../assets/nature.png'
-import waterdrop from '../../assets/waterdrop.png'
-import { Header } from '../../components/Header'
-import { Load } from '../../components/Load'
-import { PlantCardSecondary } from '../../components/PlantCardSecondary'
+import nature from "../../assets/nature.png";
+import waterdrop from "../../assets/waterdrop.png";
+import { Header } from "../../components/Header";
+import { Load } from "../../components/Load";
+import { PlantCardSecondary } from "../../components/PlantCardSecondary";
 import {
-  loadPlant,
   StoragePlantLoad,
   removePlant,
-  distanceToNextRegation
-} from '../../libs/storage'
-import * as Styled from './styles'
+  loadSortedPlantsByNextDate,
+  getFormatedDateToNextRegation,
+} from "../../libs/storage";
+import * as Styled from "./styles";
+import { TabsParams } from "../../routes/types";
+import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 
-interface Props {
-  navigation: ReturnType<typeof useNavigation>
-}
+type Props = BottomTabScreenProps<TabsParams, "Minhas Plantas">;
 
 export function MyPlantsScreen({ navigation }: Props): React.ReactElement {
-  const [myPlants, setMyPlants] = React.useState<StoragePlantLoad[]>([])
-  const [loading, setLoading] = React.useState(true)
-  const [empty, setEmpty] = React.useState(false)
-  const [nextWatered, setNextWatered] = React.useState<string>()
+  const [myPlants, setMyPlants] = React.useState<StoragePlantLoad[]>([]);
+  const [loading, setLoading] = React.useState(true);
+  const [empty, setEmpty] = React.useState(false);
+  const [nextWatered, setNextWatered] = React.useState<string>();
 
   function handlePlantEdit(plant: StoragePlantLoad) {
-    navigation.navigate('PlantSave', { pageData: plant })
+    navigation.navigate("PlantSave", { pageData: plant });
   }
 
   function handleRemove(plant: StoragePlantLoad) {
-    Alert.alert('Remover', `Deseja remover a ${plant.data.name}?`, [
+    Alert.alert("Remover", `Deseja remover a ${plant.data.name}?`, [
       {
-        text: 'Não 🙏🏻',
-        style: 'cancel'
+        text: "Não 🙏🏻",
+        style: "cancel",
       },
       {
-        text: 'Sim 😥',
+        text: "Sim 😥",
         onPress: async () => {
           try {
-            await removePlant(plant.data.id.toString())
+            await removePlant(plant.data.id.toString());
 
             const newPlants = myPlants.filter(
-              item => item.data.id !== plant.data.id
-            )
-            if (!newPlants.length) return setEmpty(true)
-            const nextPlant = newPlants[0]
-            const nextTime = distanceToNextRegation(
-              nextPlant.data.frequency,
-              nextPlant.dateTimeNotification,
-              nextPlant.selectedWeeks
-            )
-            setNextWatered(
-              `Regue sua ${newPlants[0].data.name} daqui a ${nextTime}`
-            )
+              (item) => item.data.id !== plant.data.id
+            );
+            if (!newPlants.length) return setEmpty(true);
 
-            setMyPlants(newPlants)
+            const nextPlant = newPlants[0];
+            const nextTime = getFormatedDateToNextRegation(nextPlant.data.frequency, nextPlant.hour, nextPlant.minute, nextPlant.selectedWeeks);
+            setNextWatered(
+              `Regue sua ${nextPlant.data.name} daqui a ${nextTime}`
+            );
+            setMyPlants(newPlants);
           } catch (error) {
             showMessage({
-              message: 'Não foi possível remover! 😥',
-              type: 'danger'
-            })
+              message: "Não foi possível remover! 😥",
+              type: "danger",
+            });
           }
-        }
-      }
-    ])
+        },
+      },
+    ]);
   }
 
   React.useEffect(() => {
     async function loadStorageData() {
-      const plantsStoraged = await loadPlant()
-      if (!plantsStoraged.length) return setEmpty(true)
-      else setEmpty(false)
-      const nextPlant = plantsStoraged[0]
-      const nextTime = distanceToNextRegation(
-        nextPlant.data.frequency,
-        nextPlant.dateTimeNotification,
-        nextPlant.selectedWeeks
-      )
+      const plantsStoraged = await loadSortedPlantsByNextDate();
+      if (!plantsStoraged.length) return setEmpty(true);
+      else setEmpty(false);
+
+      
+
+      const nextPlant = plantsStoraged[0];
+      const nextTime = getFormatedDateToNextRegation(nextPlant.data.frequency, nextPlant.hour, nextPlant.minute, nextPlant.selectedWeeks);
       setNextWatered(
-        `Regue sua ${plantsStoraged[0].data.name} daqui a ${nextTime}`
-      )
-      setMyPlants(plantsStoraged)
-      setLoading(false)
+        `Regue sua ${nextPlant.data.name} daqui a ${nextTime}`
+      );
+      setMyPlants(plantsStoraged);
+      setLoading(false);
     }
     const subscription = DeviceEventEmitter.addListener(
-      '@plantmanager:plant_save',
+      "@plantmanager:plant_save",
       () => {
-        loadStorageData()
+        loadStorageData();
       }
-    )
-    loadStorageData()
+    );
+    loadStorageData();
     return () => {
-      DeviceEventEmitter.removeSubscription(subscription)
-    }
-  }, [])
+      subscription.remove();
+    };
+  }, []);
 
   if (empty) {
     return (
@@ -116,11 +110,11 @@ export function MyPlantsScreen({ navigation }: Props): React.ReactElement {
           </Styled.EmptySubtitle>
         </Styled.EmptyContainer>
       </Styled.Container>
-    )
+    );
   }
 
   if (loading) {
-    return <Load />
+    return <Load />;
   }
   return (
     <Styled.Container>
@@ -136,7 +130,7 @@ export function MyPlantsScreen({ navigation }: Props): React.ReactElement {
 
         <FlatList
           data={myPlants}
-          keyExtractor={item => item.data.id.toString()}
+          keyExtractor={(item) => item.data.id.toString()}
           renderItem={({ item }) => (
             <PlantCardSecondary
               onPress={() => handlePlantEdit(item)}
@@ -144,7 +138,8 @@ export function MyPlantsScreen({ navigation }: Props): React.ReactElement {
               data={{
                 name: item.data.name,
                 photo: item.data.photo,
-                hour: item.hour
+                hour: item.hour,
+                minute: item.minute,
               }}
             />
           )}
@@ -152,5 +147,5 @@ export function MyPlantsScreen({ navigation }: Props): React.ReactElement {
         />
       </Styled.Plants>
     </Styled.Container>
-  )
+  );
 }

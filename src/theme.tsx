@@ -29,6 +29,10 @@ export const theme = {
   }
 }
 
-export const Theme: React.FC = ({ children }) => (
+interface Props {
+  children: React.ReactNode
+}
+
+export const Theme: React.FC<Props> = ({ children }) => (
   <ThemeProvider theme={theme}>{children}</ThemeProvider>
 )

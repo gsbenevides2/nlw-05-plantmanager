@@ -1,103 +1,106 @@
 /* eslint-disable camelcase */
-import React, { useEffect, useState } from 'react'
-import { ActivityIndicator, FlatList, View } from 'react-native'
+import React, { useEffect, useState } from "react";
+import { ActivityIndicator, FlatList, View } from "react-native";
 
-import { useNavigation } from '@react-navigation/native'
-
-import { EnvironmentButton } from '../../components/EnvironmentButton'
-import { Header } from '../../components/Header'
-import { Load } from '../../components/Load'
-import { PlantCardPrimary } from '../../components/PlantCardPrimary'
-import { PlantData } from '../../libs/storage'
-import api from '../../services/api'
-import { theme } from '../../theme'
-import * as Styled from './styles'
+import { EnvironmentButton } from "../../components/EnvironmentButton";
+import { Header } from "../../components/Header";
+import { Load } from "../../components/Load";
+import { PlantCardPrimary } from "../../components/PlantCardPrimary";
+import { PlantData } from "../../libs/storage";
+import api from "../../services/api";
+import { theme } from "../../theme";
+import * as Styled from "./styles";
+import { StackScreenProps } from "@react-navigation/stack";
+import { StackScreensProps, TabsParams } from "../../routes/types";
+import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 
 interface EnvironmentProps {
-  key: string
-  title: string
+  key: string;
+  title: string;
 }
-
-interface Props {
-  navigation: ReturnType<typeof useNavigation>
-}
+type Props = BottomTabScreenProps<TabsParams, "Nova Planta">;
 
 export function PlantSelectScreen({ navigation }: Props): React.ReactElement {
-  const [environments, setEnvironments] = useState<EnvironmentProps[]>([])
-  const [plants, setPlants] = useState<PlantData[]>([])
-  const [filteredPlants, setFilteredPlants] = useState<PlantData[]>([])
-  const [environmentSelected, setEnvironmentSelected] = useState('all')
-  const [loading, setLoading] = useState(true)
+  const [environments, setEnvironments] = useState<EnvironmentProps[]>([]);
+  const [plants, setPlants] = useState<PlantData[]>([]);
+  const [filteredPlants, setFilteredPlants] = useState<PlantData[]>([]);
+  const [environmentSelected, setEnvironmentSelected] = useState("all");
+  const [loading, setLoading] = useState(true);
 
-  const [page, setPage] = useState(1)
-  const [loadingMore, setLoadingMore] = useState(false)
+  const [page, setPage] = useState(1);
+  const [loadingMore, setLoadingMore] = useState(false);
 
   function handlePlantSelect(plant: PlantData) {
-    navigation.navigate('PlantSave', { pageData: { data: plant } })
+    navigation.navigate("PlantSave", { pageData: { data: plant } });
   }
 
   function handleEnvironmentSelected(environment: string) {
-    setEnvironmentSelected(environment)
+    setEnvironmentSelected(environment);
 
-    if (environment === 'all') return setFilteredPlants(plants)
+    if (environment === "all") return setFilteredPlants(plants);
 
-    const filtered = plants.filter(plant =>
+    const filtered = plants.filter((plant) =>
       plant.environments.includes(environment)
-    )
+    );
 
-    setFilteredPlants(filtered)
+    setFilteredPlants(filtered);
   }
 
   async function fetchPlants() {
-    const { data } = await api.get(
+    const { data } = await api.get<PlantData[]>(
       `plants?_sort=name&_order=asc&_page=${page}&_limit=8`
-    )
+    );
 
-    if (!data) return setLoading(true)
+    const plants:PlantData[] = data.map((plant) => ({
+      ...plant,
+      photo:`http://google.gui.dev.br:3001/${plant.photo}`
+    }));
+
+    if (!data) return setLoading(true);
 
     if (page > 1) {
-      setPlants(oldValue => [...oldValue, ...data])
-      setFilteredPlants(oldValue => [...oldValue, ...data])
+      setPlants((oldValue) => [...oldValue, ...plants]);
+      setFilteredPlants((oldValue) => [...oldValue, ...plants]);
     } else {
-      setPlants(data)
-      setFilteredPlants(data)
+      setPlants(plants);
+      setFilteredPlants(plants);
     }
 
-    setLoading(false)
-    setLoadingMore(false)
+    setLoading(false);
+    setLoadingMore(false);
   }
 
   function handleFetchMore(distance: number) {
-    if (distance < 1) return
+    if (distance < 1) return;
 
-    setLoadingMore(true)
-    setPage(oldValue => oldValue + 1)
-    fetchPlants()
+    setLoadingMore(true);
+    setPage((oldValue) => oldValue + 1);
+    fetchPlants();
   }
 
   useEffect(() => {
     async function fetchEnvironment() {
       const { data } = await api.get(
-        'plants_environments?_sort=title&_order=asc'
-      )
+        "plants_environments?_sort=title&_order=asc"
+      );
 
       setEnvironments([
         {
-          key: 'all',
-          title: 'Todos'
+          key: "all",
+          title: "Todos",
         },
-        ...data
-      ])
+        ...data,
+      ]);
     }
 
-    fetchEnvironment()
-  }, [])
+    fetchEnvironment();
+  }, []);
 
   useEffect(() => {
-    fetchPlants()
-  }, [])
+    fetchPlants();
+  }, []);
 
-  if (loading) return <Load />
+  if (loading) return <Load />;
 
   return (
     <Styled.Container>
@@ -111,7 +114,7 @@ export function PlantSelectScreen({ navigation }: Props): React.ReactElement {
       <View>
         <FlatList
           data={environments}
-          keyExtractor={item => item.key}
+          keyExtractor={(item) => item.key}
           renderItem={({ item }) => (
             <EnvironmentButton
               title={item.title}
@@ -130,7 +133,7 @@ export function PlantSelectScreen({ navigation }: Props): React.ReactElement {
       <Styled.Plants>
         <FlatList
           data={filteredPlants}
-          keyExtractor={item => item.id.toString()}
+          keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
             <PlantCardPrimary
               data={item}
@@ -153,5 +156,5 @@ export function PlantSelectScreen({ navigation }: Props): React.ReactElement {
         />
       </Styled.Plants>
     </Styled.Container>
-  )
+  );
 }

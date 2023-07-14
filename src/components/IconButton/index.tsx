@@ -1,9 +1,10 @@
 import React from 'react'
+import { Feather } from '@expo/vector-icons'
 
 import * as Styled from './styles'
 
 interface Props {
-  icon: string
+  icon: keyof typeof Feather.glyphMap
   onPress: () => void
 }
 

@@ -1,9 +1,13 @@
 import React from 'react'
 
-import { StackActions, useNavigation } from '@react-navigation/native'
+import { StackActions } from '@react-navigation/native'
 
 import { TextButton } from '../../components/TextButton'
 import * as Styled from './styles'
+
+
+import {StackScreenProps} from '@react-navigation/stack'
+import { StackScreensProps } from '../../routes/types'
 
 interface Params {
   title: string
@@ -18,12 +22,10 @@ const emojis = {
   smile: '😄'
 }
 
-interface Props {
-  navigation: ReturnType<typeof useNavigation>
-  route: {
-    params: Params
-  }
-}
+
+
+type Props = StackScreenProps<StackScreensProps, "Confirmation">
+
 export function ConfirmationScreen({
   navigation,
   route
