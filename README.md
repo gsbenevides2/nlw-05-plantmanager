@@ -18,6 +18,7 @@
 <ul>
 <li>Expo</li>
 <li>Typescript</li>
+<li>React Native</li>
 </ul>
 <h3>📚 Bibliotecas</h3>
 <ul>
