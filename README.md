@@ -1,13 +1,13 @@
+<h1 align="center">
+  <img alt="PlantManager" title="PlantManager" src=".github/logo.svg" />
+</h1>
 <p align="center">
-<img alt="PlantManager" title="PlantManager" src=".github/logo.svg" />
-<br>
 <img src="https://img.shields.io/badge/TypeScript-32B768?style=for-the-badge&logo=typescript&logoColor=white">
 <img src="https://img.shields.io/badge/Expo-32B768?style=for-the-badge&logo=expo&logoColor=white">
 <img src="https://img.shields.io/badge/React Native-32B768?style=for-the-badge&logo=react&logoColor=white">
 <img src="https://img.shields.io/badge/Styled Components-32B768?style=for-the-badge&logo=styledcomponents&logoColor=white"><br>
 <a href="https://github.com/gsbenevides2/nlw-05-plantmanager/releases/tag/1.0.0">Clique aqui para download</a>
 </p>
-<hr>
 <p align="justify" >Projeto de desenvolvido durante a <a href="https://nextlevelweek.com">Next Level Week 5</a> da <a href="https://github.com/rocketseat">@rocketseat.</a> Um app para lembrar do horário de regar às plantas.</p>
 
 <p align="center">
