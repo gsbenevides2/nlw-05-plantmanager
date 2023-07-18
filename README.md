@@ -48,6 +48,7 @@
 <ul>
 <li><a href="https://gui.dev.br/blog/post/uma-semana-puxada-por%C3%A9m-incr%C3%ADvel-%F0%9F%9A%80">Ver publicação no Blog.</a></li>
 <li><a href="https://github.com/gsbenevides2/nlw-05-server">Código do servidor fake que fornece as informações sobre as plantas.</a></li>
+<li><a href="https://www.figma.com/file/WscOhp32wfbuWSDhVsYiE5/PlantManager?type=design&node-id=0%3A1&mode=design&t=XFOeaD2keaVB8xoH-1">Prototipagem do Projeto no Figma</a></li>
 </ul>
 
 <h2>📃 Licença</h2>
