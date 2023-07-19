@@ -11,8 +11,10 @@
 <p align="justify" >Projeto de desenvolvido durante a <a href="https://nextlevelweek.com">Next Level Week 5</a> da <a href="https://github.com/rocketseat">@rocketseat.</a> Um app para lembrar do horário de regar às plantas.</p>
 
 <p align="center">
+  <a href="https://www.youtube.com/watch?v=UUMfnyokqrI">
   <img src=".github/capa.png">
-  <a href="https://www.youtube.com/watch?v=UUMfnyokqrI">Veja esse video demonstração!</a>
+  Veja esse video demonstração!
+  </a>
 </p>
 
 <h2>👨‍💻 Tecnologias</h2>
